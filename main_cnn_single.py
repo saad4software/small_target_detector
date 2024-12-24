@@ -5,7 +5,6 @@ from k_means import kmeans
 from tracker2 import Tracker
 from util import *
 import math
-from classifier.model import get_model
 from tensorflow import keras
 from tensorflow.keras.models import load_model
 import time

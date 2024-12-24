@@ -5,7 +5,6 @@ from k_means import kmeans_is_target
 from tracker2 import Tracker
 from util import *
 import math
-from classifier.model import get_model
 from tensorflow import keras
 from tensorflow.keras.models import load_model
 
@@ -40,7 +39,7 @@ tracker = Tracker(
 )
 
 
-model = load_model("classifier_single.keras")
+# model = load_model("classifier_single.keras")
 
 
 while True:

@@ -39,13 +39,6 @@ def dense_flow(original_frame1, original_frame2, pyramid=0, min_dim=15, max_dim=
     ret, magMask = cv2.threshold(originalMag, thresh, 255, cv2.THRESH_BINARY)
     # ret, angMask = cv2.threshold(originalAng, thresh, 255, cv2.THRESH_BINARY)
 
-
-    # kernel=np.ones((5,5))
-    # magMask = cv2.erode(magMask, kernel, iterations=1)
-    # magMask = cv2.morphologyEx(magMask, cv2.MORPH_OPEN, kernel, iterations=1)
-    # magMask = cv2.morphologyEx(magMask, cv2.MORPH_CLOSE, kernel, iterations=3)
-
-
     if pyramid > 0:
         for _ in range(pyramid):
             magMask = cv2.pyrUp(magMask)
@@ -53,14 +46,25 @@ def dense_flow(original_frame1, original_frame2, pyramid=0, min_dim=15, max_dim=
     magMask = np.uint8(magMask)
 
 
-    # cv2.imshow("mask", magMask)
-    # cv2.imshow("mask2", mag_new_mask)
+    # tmpAng = originalAng.copy()
+    # speedAverage = np.average(tmpAng[originalMag > 100]) # average only moving pixels in the speed mask
+    # tmpAng[np.logical_and(tmpAng < speedAverage + 45, tmpAng > speedAverage - 45)] = 0
 
 
     contours, hierarchy = cv2.findContours(magMask, 1, 2)
 
     output_frame = original_frame1.copy()
     # temp_mask = np.zeros_like(originalAng)
+
+
+    # totalArea = 0
+    # for cnt in contours:
+    #     area = cv2.contourArea(cnt)
+    #     totalArea += area
+
+    # if totalArea > 20000:
+    #     contours, hierarchy = cv2.findContours(tmpAng, 1, 2)
+
 
     for cnt in contours:
         area = cv2.contourArea(cnt)
@@ -69,24 +73,6 @@ def dense_flow(original_frame1, original_frame2, pyramid=0, min_dim=15, max_dim=
         # cv2.drawContours(temp_mask, [cnt], 0, (255,), -1)
         
         # flow_angle = cv2.bitwise_and(originalAng, temp_mask)
-        
-        
-        # angle_thresh = 1*originalAng.std()
-        # is_target = flow_angle.std() < angle_thresh
-        # is_target = len(np.unique(flow_angle)) < 100
-        # if (flow_angle.std() < angle_thresh):
-        #     print("true target")
-            # detections.append([x,y,x+w,y+h, area])
-
-        # print("count")
-        # print(temp_mask)
-        # print(flow_angle.std())
-        # print(flow_angle.mean())
-        # print(len(np.unique(flow_angle)))
-        # cv2.imshow("mask", flow_angle)
-
-        # print(np.mean(flow_angle))
-
 
         multiplier = pyramid + 1
         if( min_dim*multiplier < h < max_dim*multiplier and min_dim*multiplier < w < max_dim*multiplier ):

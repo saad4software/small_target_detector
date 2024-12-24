@@ -36,8 +36,8 @@ def get_target_center(image):
         return (x+w/2,y+h/2)
 
 
-frame1 = cv2.imread("/Users/saad/Projects/phd/small_target_detection_2/frame12.png")
-frame2 = cv2.imread("/Users/saad/Projects/phd/small_target_detection_2/frame13.png")
+frame1 = cv2.imread("../data/frame12.png")
+frame2 = cv2.imread("../data/frame13.png")
 
 # cv2.imshow("frame1",frame1)
 # cv2.imshow("frame2", frame2)
